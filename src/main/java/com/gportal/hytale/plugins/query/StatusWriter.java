@@ -8,9 +8,11 @@ import com.hypixel.hytale.server.core.Options;
 import com.hypixel.hytale.common.util.java.ManifestUtil;
 import com.hypixel.hytale.protocol.ProtocolSettings;
 import com.hypixel.hytale.server.core.HytaleServer;
+import com.hypixel.hytale.server.core.auth.ServerAuthManager;
 import com.hypixel.hytale.server.core.universe.Universe;
 
 import java.net.InetSocketAddress;
+import java.time.Instant;
 import java.util.Objects;
 
 public class StatusWriter {
@@ -34,8 +36,11 @@ public class StatusWriter {
         }
     }
 
+    // https://developer.valvesoftware.com/wiki/Server_queries
     private ServerInfo createServerInfo(String ip) {
         var hytale = HytaleServer.get();
+
+        char environment = System.getProperty("os.name").toLowerCase().contains("win") ? 'w' : 'l';
 
         return new ServerInfo(
                 new InetSocketAddress(ip, 28001),
@@ -49,11 +54,11 @@ public class StatusWriter {
                 (byte) hytale.getConfig().getMaxPlayers(),
                 (byte) 0,
                 'd',
-                'o',
+                environment,
                 hytale.getConfig().getPassword() != null && !Objects.equals(hytale.getConfig().getPassword(), ""),
                 false,
                 ManifestUtil.getImplementationVersion(),
-                null,
+                resolveGamePort(),
                 null,
                 null,
                 null,
@@ -82,11 +87,12 @@ public class StatusWriter {
         }
 
         // Update rules
-        server.rules.put("version", ManifestUtil.getImplementationVersion());
         server.rules.put("patchline", ManifestUtil.getPatchline());
         server.rules.put("revision", ManifestUtil.getImplementationRevisionId());
         server.rules.put("protocol_version", String.valueOf(ProtocolSettings.PROTOCOL_VERSION));
         server.rules.put("protocol_hash", ProtocolSettings.PROTOCOL_HASH);
+        server.rules.put("auth_status",  getAuthStatus());
+        universe.getWorlds().forEach((name, world) -> server.rules.put("tps_" + name, String.valueOf(world.getTps())));
     }
 
     private String resolveQueryHost() {
@@ -107,6 +113,14 @@ public class StatusWriter {
         }
     }
 
+    private short resolveGamePort() {
+        if (!Options.getOptionSet().has(Options.BIND)) {
+            return (short) 0;
+        }
+
+        return (short) Options.getOptionSet().valuesOf(Options.BIND).getFirst().getPort();
+    }
+
     private int resolveQueryPort() {
         String env = System.getenv("QUERY_PORT");
         if (env != null && !env.isBlank()) {
@@ -118,5 +132,27 @@ public class StatusWriter {
         }
 
         return Options.getOptionSet().valuesOf(Options.BIND).getFirst().getPort() + 1;
+    }
+
+    private String getAuthStatus() {
+        ServerAuthManager manager = ServerAuthManager.getInstance();
+
+        if (manager.hasSessionToken() && manager.hasIdentityToken()) {
+
+            Instant tokenExpiry = manager.getTokenExpiry();
+            if (tokenExpiry != null) {
+                long secondsRemaining = tokenExpiry.getEpochSecond() - Instant.now().getEpochSecond();
+                if (secondsRemaining <= 0) {
+                    return "expired";
+                }
+            }
+
+
+            return "authenticated";
+        } else if (manager.hasSessionToken() || manager.hasIdentityToken()) {
+            return "partial";
+        }
+
+        return "unauthenticated";
     }
 }
