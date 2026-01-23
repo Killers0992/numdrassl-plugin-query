@@ -108,7 +108,6 @@ public class StatusWriter {
         server.rules.put("patchline", ManifestUtil.getPatchline());
         server.rules.put("revision", ManifestUtil.getImplementationRevisionId());
         server.rules.put("protocol_version", String.valueOf(ProtocolSettings.PROTOCOL_VERSION));
-        server.rules.put("protocol_hash", ProtocolSettings.PROTOCOL_HASH);
         server.rules.put("auth_status",  getAuthStatus());
         server.rules.put("max_view_radius",  String.valueOf(HytaleServer.get().getConfig().getMaxViewRadius()));
 
