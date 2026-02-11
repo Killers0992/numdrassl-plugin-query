@@ -4,42 +4,58 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.gportal.hytale.plugins</groupId>
-    <artifactId>gportal-query</artifactId>
-    <version>${revision}</version>
+    <groupId>dev.killers0992</groupId>
+    <artifactId>NumdrasslPluginQuery</artifactId>
+    <version>1.0.0</version>
+
+    <properties>
+        <maven.compiler.source>25</maven.compiler.source>
+        <maven.compiler.target>25</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <repositories>
         <repository>
             <id>github</id>
             <url>https://maven.pkg.github.com/g-portal/a2s-java</url>
         </repository>
-        <repository>
-            <id>hytale-release</id>
-            <url>https://maven.hytale.com/release</url>
-        </repository>
-        <repository>
-            <id>hytale-pre-release</id>
-            <url>https://maven.hytale.com/pre-release</url>
-        </repository>
     </repositories>
 
-    <properties>
-        <revision>1.0.0-SNAPSHOT</revision>
-        <maven.compiler.source>25</maven.compiler.source>
-        <maven.compiler.target>25</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
     <dependencies>
+        <dependency>
+            <groupId>com.hypixel.hytale</groupId>
+            <artifactId>server</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>C:\Users\Kille\AppData\Roaming\Hytale\install\release\package\game\latest\Server\HytaleServer.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>me.internalizable.numdrassl</groupId>
+            <artifactId>numdrassl-api</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>C:\Users\Kille\Downloads\api-1.0.1.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>me.internalizable.numdrassl</groupId>
+            <artifactId>numdrassl-proxy</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>C:\Users\Kille\Downloads\proxy-1.1.jar</systemPath>
+        </dependency>
+
         <dependency>
             <groupId>com.gportal</groupId>
             <artifactId>a2s</artifactId>
             <version>1.1.2</version>
         </dependency>
+
         <dependency>
-            <groupId>com.hypixel.hytale</groupId>
-            <artifactId>Server</artifactId>
-            <version>2026.01.22-6f8bdbdc4</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.25</version>
         </dependency>
     </dependencies>
 
