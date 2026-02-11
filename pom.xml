@@ -23,14 +23,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.hypixel.hytale</groupId>
-            <artifactId>server</artifactId>
-            <version>1.0.0</version>
-            <scope>system</scope>
-            <systemPath>C:\Users\Kille\AppData\Roaming\Hytale\install\release\package\game\latest\Server\HytaleServer.jar</systemPath>
-        </dependency>
-
-        <dependency>
             <groupId>me.internalizable.numdrassl</groupId>
             <artifactId>numdrassl-api</artifactId>
             <version>1.0.0</version>
