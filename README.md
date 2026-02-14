@@ -1,3 +1,5 @@
+![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/Killers0992/numdrassl-plugin-query/total?label=Downloads\&labelColor=2e343e\&color=00FFFF\&style=for-the-badge)
+
 # Numdrassil Plugin Query
 
 A Numdrassil proxy plugin that exposes the Steam Query (A2S) protocol, allowing your server to be queried by standard server browsers and tools.
